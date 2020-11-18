@@ -31,8 +31,8 @@ Calculator::Calculator(QWidget* pwgt/*= 0*/) : QWidget(pwgt)
     QRadioButton* rb1 = new QRadioButton("Обычный");
     rb1->setChecked(true);
     QRadioButton* rb2 = new QRadioButton("Инженерный");
-    connect(rb1, SIGNAL(clicked()), SLOT(change_calculator_type()));
-    connect(rb2, SIGNAL(clicked()), SLOT(change_calculator_type()));
+    connect(rb1, SIGNAL(clicked()), SLOT(changeCalculatorType()));
+    connect(rb2, SIGNAL(clicked()), SLOT(changeCalculatorType()));
     m_rb_group1->addButton(rb1);
     m_rb_group1->addButton(rb2);
 
@@ -40,8 +40,8 @@ Calculator::Calculator(QWidget* pwgt/*= 0*/) : QWidget(pwgt)
     QRadioButton* rb_dark = new QRadioButton("Темный");
     QRadioButton* rb_light = new QRadioButton("Светлый");
     rb_light->setChecked(true);
-    connect(rb_dark, SIGNAL(clicked()), SLOT(change_the_color_theme()));
-    connect(rb_light, SIGNAL(clicked()), SLOT(change_the_color_theme()));
+    connect(rb_dark, SIGNAL(clicked()), SLOT(changeTheColorTheme()));
+    connect(rb_light, SIGNAL(clicked()), SLOT(changeTheColorTheme()));
     m_rb_group2->addButton(rb_light);
     m_rb_group2->addButton(rb_dark);
 
@@ -83,7 +83,7 @@ Calculator::Calculator(QWidget* pwgt/*= 0*/) : QWidget(pwgt)
     setWindowTitle("Калькулятор(Обычный)");
 }
 
-void Calculator::CommonCalculator()
+void Calculator::commonCalculator()
 {
     m_Layout->addWidget(m_plcd, 0, 0, 1, 5);
     QLayoutItem *item=m_Layout->itemAtPosition(1,8);
@@ -140,7 +140,7 @@ void Calculator::CommonCalculator()
     setWindowTitle("Калькулятор(Обычный)");
 }
 
-void Calculator::EngineerCalculator()
+void Calculator::engineerCalculator()
 {
     m_Layout->addWidget(m_plcd, 0, 0, 1, 9);
     QLayoutItem *item=m_Layout->itemAtPosition(1,4);
@@ -364,17 +364,17 @@ void Calculator::slotButtonClicked()
     }
 }
 
-void Calculator::change_calculator_type(){
+void Calculator::changeCalculatorType(){
 
     if(dynamic_cast<QRadioButton*>(sender())->text() == "Обычный")
-        CommonCalculator();
+        commonCalculator();
 
     if(dynamic_cast<QRadioButton*>(sender())->text()== "Инженерный" )
-        EngineerCalculator();
+        engineerCalculator();
 
 }
 
-void Calculator::change_the_color_theme(){
+void Calculator::changeTheColorTheme(){
 
     if(dynamic_cast<QRadioButton*>(sender())->text() == "Темный"){
         m_plcd->setStyleSheet("background-color:black; color: white;");

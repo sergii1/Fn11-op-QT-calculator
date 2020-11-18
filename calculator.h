@@ -29,15 +29,15 @@ private:
 public:
     Calculator(QWidget* pwgt = nullptr);
     QPushButton* createButton(const QString& str);
-    void CommonCalculator();
-    void EngineerCalculator();
+    void commonCalculator();
+    void engineerCalculator();
     void calculateBinary();
     void calculateUnary();
 
 public slots:
     void slotButtonClicked();
-    void change_calculator_type();
-    void change_the_color_theme();
+    void changeCalculatorType();
+    void changeTheColorTheme();
 };
 
 #endif // CALCULATOR_H
