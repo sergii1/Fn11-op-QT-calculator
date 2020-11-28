@@ -1,11 +1,12 @@
-#include "Calculator.h"
+#include "calculator.h"
 #include <math.h>
 #include <QDebug>
 QPushButton* Calculator::createButton(const QString& str)
 {
-    QPushButton* pcmd = new QPushButton(str);
+    QPushButton* pcmd = new QPushButton(str, this);
     pcmd->setMinimumSize(40, 40);
     connect(pcmd, SIGNAL(clicked()), SLOT(slotButtonClicked()));
+
     if (str == "pi")
     {
         pcmd->setStyleSheet("border: 1px solid gray;");
@@ -27,18 +28,18 @@ QPushButton* Calculator::createButton(const QString& str)
 
 Calculator::Calculator(QWidget* pwgt/*= 0*/) : QWidget(pwgt)
 {
-    m_rb_group1 = new QButtonGroup();
-    QRadioButton* rb1 = new QRadioButton("Обычный");
+    m_rb_group1 = new QButtonGroup(this);
+    QRadioButton* rb1 = new QRadioButton("Обычный", this);
     rb1->setChecked(true);
-    QRadioButton* rb2 = new QRadioButton("Инженерный");
+    QRadioButton* rb2 = new QRadioButton("Инженерный", this);
     connect(rb1, SIGNAL(clicked()), SLOT(changeCalculatorType()));
     connect(rb2, SIGNAL(clicked()), SLOT(changeCalculatorType()));
     m_rb_group1->addButton(rb1);
     m_rb_group1->addButton(rb2);
 
-    m_rb_group2 = new QButtonGroup();
-    QRadioButton* rb_dark = new QRadioButton("Темный");
-    QRadioButton* rb_light = new QRadioButton("Светлый");
+    m_rb_group2 = new QButtonGroup(this);
+    QRadioButton* rb_dark = new QRadioButton("Темный", this);
+    QRadioButton* rb_light = new QRadioButton("Светлый", this);
     rb_light->setChecked(true);
     connect(rb_dark, SIGNAL(clicked()), SLOT(changeTheColorTheme()));
     connect(rb_light, SIGNAL(clicked()), SLOT(changeTheColorTheme()));
@@ -293,7 +294,11 @@ void Calculator::calculateUnary()
 
 void Calculator::slotButtonClicked()
 {
-    QString str = (dynamic_cast<QPushButton*>(sender()))->text();
+    QPushButton* pb = dynamic_cast<QPushButton*>(sender());
+    if(pb==nullptr){
+        qDebug()<<"slotButtonClicked dynamic_cast error";
+    }
+    QString str = pb->text();
     if (str == "CE") {
         m_stk.clear();
         m_strDisplay = "";
@@ -365,25 +370,36 @@ void Calculator::slotButtonClicked()
 }
 
 void Calculator::changeCalculatorType(){
-
-    if(dynamic_cast<QRadioButton*>(sender())->text() == "Обычный")
+    QRadioButton* rb = dynamic_cast<QRadioButton*>(sender());
+    if(rb==nullptr){
+        qDebug()<<"changeCalculatorType ERRROR";
+        return;
+    }
+    QString calculatorType = rb->text();
+    if(calculatorType == "Обычный")
         commonCalculator();
 
-    if(dynamic_cast<QRadioButton*>(sender())->text()== "Инженерный" )
+    if(calculatorType == "Инженерный" )
         engineerCalculator();
 
 }
 
 void Calculator::changeTheColorTheme(){
-
-    if(dynamic_cast<QRadioButton*>(sender())->text() == "Темный"){
+    QRadioButton* rb = dynamic_cast<QRadioButton*>(sender());
+    if(rb==nullptr){
+        qDebug()<<"changeTheColorTheme ERRROR";
+        return;
+    }
+    QString colorTheme = rb->text();
+    if(colorTheme == "Темный"){
         m_plcd->setStyleSheet("background-color:black; color: white;");
         this->setStyleSheet("background-color:black; color: white;");
+        return;
     }
-
-    if(dynamic_cast<QRadioButton*>(sender())->text() == "Светлый"){
+    if(colorTheme == "Светлый"){
         m_plcd->setStyleSheet("background-color:white; color:black;");
         this->setStyleSheet("background-color:white; color:black;");
+        return;
     }
 }
 
